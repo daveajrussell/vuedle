@@ -5,19 +5,21 @@ import { onMounted, ref } from 'vue';
 let word = ref('');
 
 onMounted(() => {
-  fetch('https://raw.githubusercontent.com/charlesreid1/five-letter-words/master/sgb-words.txt')
+  //fetch('https://raw.githubusercontent.com/charlesreid1/five-letter-words/master/sgb-words.txt')
+  fetch('https://raw.githubusercontent.com/powerlanguage/word-lists/master/common-7-letter-words.txt')
     .then(response => response.text())
     .then((words) => {
       const availableWords = words.split('\n'),
         index = Math.floor(Math.random() * availableWords.length);
-      word.value = availableWords[index];
+      word.value = availableWords[index].toLowerCase();
     });
 });
 </script>
 
 <template>
   <main>
-    <GameBoard :rows="6" :tiles="5" :word="word" />
+    <!-- <GameBoard :rows="6" :tiles="5" :word="word" /> -->
+    <GameBoard :rows="6" :tiles="7" :word="word" />
   </main>
 </template>
 
