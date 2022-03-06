@@ -5,7 +5,6 @@ import { onMounted, ref } from 'vue';
 let word = ref('');
 
 onMounted(() => {
-  //fetch('https://raw.githubusercontent.com/charlesreid1/five-letter-words/master/sgb-words.txt')
   fetch('http://vuedle.daveajrussell.com/common-7-letter-words.txt')
     .then(response => response.text())
     .then((words) => {
@@ -18,8 +17,7 @@ onMounted(() => {
 
 <template>
   <main>
-    <!-- <GameBoard :rows="6" :tiles="5" :word="word" /> -->
-    <GameBoard :rows="6" :tiles="7" :word="word" />
+    <GameBoard :rows="8" :tiles="7" :word="word" />
   </main>
 </template>
 

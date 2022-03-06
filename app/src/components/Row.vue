@@ -50,30 +50,33 @@ onUpdated(() => {
 });
 
 function guessWord(): void {
-    guessed.value = true;
-    const word = props.word.split('');
-    const attempts = word.map((e) => { return { letter: e, guessed: false } });
+    const currentIndex = tiles.findIndex(x => x.enabled), currentTile = tiles[currentIndex];
+    if (currentIndex === props.tiles - 1) {
+        guessed.value = true;
+        const word = props.word.split('');
+        const attempts = word.map((e) => { return { letter: e, guessed: false } });
 
-    tiles.forEach((tile, index) => {
-        tile.enabled = tile.focus = false;
-        const value = tile.value;
-        const occurrences = word.reduce((a: any[], e: string, i: number) => {
-            if (e === value)
-                a.push(i);
-            return a;
-        }, []);
+        tiles.forEach((tile, index) => {
+            tile.enabled = tile.focus = false;
+            const value = tile.value;
+            const occurrences = word.reduce((a: any[], e: string, i: number) => {
+                if (e === value)
+                    a.push(i);
+                return a;
+            }, []);
 
-        if (occurrences.length > 0) {
-            const attempt = attempts.find(e => e.letter === value && !e.guessed);
-            if (attempt) {
-                attempt.guessed = true;
-                tile.correctLetter = true;
-                tile.correctPosition = occurrences.some((e) => e === index);
+            if (occurrences.length > 0) {
+                const attempt = attempts.find(e => e.letter === value && !e.guessed);
+                if (attempt) {
+                    attempt.guessed = true;
+                    tile.correctLetter = true;
+                    tile.correctPosition = occurrences.some((e) => e === index);
+                }
             }
-        }
-    });
+        });
 
-    emit('guess', guess);
+        emit('guess', guess);
+    }
 }
 
 function handleDelete(): void {
@@ -99,43 +102,15 @@ function handleDelete(): void {
             :correct-letter="tile.correctLetter"
             :correct-position="tile.correctPosition"
             @backspace="handleDelete()"
+            @enter="guessWord()"
         />
-        <button v-if="guess.length === props.tiles && !guessed" @click="guessWord()">Guess</button>
     </div>
 </template>
 
 <style scoped>
 .row {
     margin-bottom: 4px;
-}
-button {
-    position: absolute;
-    display: inline-block;
-    text-decoration: none;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 250ms ease-in-out, transform 150ms ease;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 100px;
-    height: 50px;
-    border: 2px solid;
-    text-transform: uppercase;
-    text-align: center;
-    background-color: var(--color-background);
-    color: var(--color-text);
-    margin-left: 4px;
-}
-button:hover {
-    background: var(--color-border);
-}
-
-button:focus {
-    outline: 2px solid var(--color-border);
-    outline-offset: -4px;
-}
-
-button:active {
-    transform: scale(0.99);
+    display: flex;
+    flex-shrink: 1;
 }
 </style>

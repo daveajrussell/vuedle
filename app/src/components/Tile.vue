@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onUpdated } from 'vue';
 const props = defineProps(['modelValue', 'enabled', 'focus', 'correctLetter', 'correctPosition']);
-const emits = defineEmits(['update:modelValue', 'backspace']);
+const emits = defineEmits(['update:modelValue', 'backspace', 'enter']);
 const input = ref(null);
 
 function onKeyPress(e: any): boolean {
@@ -16,6 +16,8 @@ function onKeyPress(e: any): boolean {
 function onKeyDown(e: any) {
     if (e.keyCode === 8) {
         emits('backspace');
+    } else if (e.keyCode === 13) {
+        emits('enter');
     }
 }
 
