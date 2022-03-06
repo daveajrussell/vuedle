@@ -1,66 +1,40 @@
 <script setup lang="ts">
-import GameBoard from './components/GameBoard.vue'
+import GameBoard from './components/GameBoard.vue';
+import { onMounted, ref } from 'vue';
+
+let word = ref('');
+
+onMounted(() => {
+  fetch('https://raw.githubusercontent.com/charlesreid1/five-letter-words/master/sgb-words.txt')
+    .then(response => response.text())
+    .then((words) => {
+      const availableWords = words.split('\n'),
+        index = Math.floor(Math.random() * availableWords.length);
+      word.value = availableWords[index];
+    });
+});
 </script>
 
 <template>
   <main>
-    <GameBoard :rows="6" :tiles="5" word="hello" />
+    <GameBoard :rows="6" :tiles="5" :word="word" />
   </main>
 </template>
 
 <style>
-@import './assets/base.css';
+@import "./assets/base.css";
 
 #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-
   font-weight: normal;
-}
-
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
 }
 
 @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
   }
 }
 </style>
