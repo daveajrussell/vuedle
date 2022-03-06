@@ -6,7 +6,7 @@ let word = ref('');
 
 onMounted(() => {
   //fetch('https://raw.githubusercontent.com/charlesreid1/five-letter-words/master/sgb-words.txt')
-  fetch('https://raw.githubusercontent.com/powerlanguage/word-lists/master/common-7-letter-words.txt')
+  fetch('http://vuedle.daveajrussell.com/common-7-letter-words.txt')
     .then(response => response.text())
     .then((words) => {
       const availableWords = words.split('\n'),
